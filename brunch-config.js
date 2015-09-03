@@ -2,7 +2,10 @@ exports.config = {
   // See http://brunch.io/#documentation for docs.
   files: {
     javascripts: {
-      joinTo: 'js/app.js'
+      joinTo: {
+        // 'js/bundle.js': /^(web\/static\/js)/
+        'js/vendor.js': /^(web\/static\/vendor)|(deps)/
+      }
 
       // To use a separate vendor.js bundle, specify two files path
       // https://github.com/brunch/brunch/blob/stable/docs/config.md#files
@@ -40,7 +43,6 @@ exports.config = {
     // Dependencies and current project directories to watch
     watched: [
       'deps/phoenix/web/static',
-      'deps/phoenix_html/web/static',
       'web/static',
       'test/static'
     ],
@@ -54,16 +56,26 @@ exports.config = {
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/web\/static\/vendor/]
+    },
+    browserify: {
+      transforms: ['babelify'],
+      bundles: {
+        'js/bundle.js': {
+          entry: 'web/static/js/app.js'
+        }
+      }
     }
   },
 
   modules: {
-    autoRequire: {
-      'js/app.js': ['web/static/js/app']
-    }
+    // wrapper: false,
+    // definition: false,
+    // autoRequire: {
+    //   'js/app.js': ['web/static/js/app']
+    // }
   },
 
   npm: {
-    enabled: true
+    enabled: false
   }
 };
